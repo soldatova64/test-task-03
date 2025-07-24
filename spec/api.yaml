@@ -1,0 +1,259 @@
+openapi: 3.0.1
+info:
+  title: Тестовое задание. Управление подписками.
+  version: 0.1.0
+servers:
+  - url: http://localhost/
+paths:
+  /v1/subscription:
+    get:
+      tags:
+        - subscription
+      summary: Список подписок.
+      description: Возвращает список подписок.
+      operationId: getListSubscription
+      responses:
+        '200':
+          description: Успешная операция
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SubscriptionList'
+        '400':
+          description: Ошибки в запросе
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+    post:
+      tags:
+        - subscription
+      summary: Создать подписку.
+      description: Создает новую подписку.
+      operationId: createSubscription
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Subscription'
+      responses:
+        '201':
+          description: Подписка успешно создана
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Subscription'
+        '400':
+          description: Ошибки в запросе
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+
+  /v1/subscription/{id}:
+    get:
+      tags:
+        - subscription
+      summary: Подписка.
+      description: Возвращает данные о подписке.
+      operationId: getSubscription
+      parameters:
+        - name: id
+          in: path
+          description: Идентификатор подписки
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Успешная операция
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Subscription'
+        '400':
+          description: Ошибки в запросе
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+        '404':
+          description: Подписка не найдена
+    put:
+      tags:
+        - subscription
+      summary: Редактировать подписку.
+      description: Редактирует данные подписки.
+      operationId: putSubscription
+      parameters:
+        - name: id
+          in: path
+          description: Идентификатор подписки
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '204':
+          description: Подписка успешно обновлена
+        '400':
+          description: Ошибки в запросе
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+        '404':
+          description: Подписка не найдена
+    delete:
+      tags:
+        - subscription
+      summary: Удалить подписку.
+      description: Удаляет подписку.
+      operationId: deleteSubscription
+      parameters:
+        - name: id
+          in: path
+          description: Идентификатор подписки
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '204':
+          description: Подписка успешно удалена
+        '400':
+          description: Ошибки в запросе
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+        '404':
+          description: Подписка не найдена
+
+  /v1/subscription/sum:
+    get:
+      tags:
+        - subscription
+      summary: Подсчет стоимости подписок.
+      description: Возвращает суммарную стоимость всех подписок.
+      operationId: getSumSubscription
+      parameters:
+        - name: date_from
+          in: query
+          required: false
+          schema:
+            type: string
+            format: date
+            example: 01-01-2025
+        - name: date_to
+          in: query
+          required: false
+          schema:
+            type: string
+            format: date
+            example: 31-12-2025
+        - name: user_id
+          in: query
+          required: false
+          schema:
+            type: string
+            example: 60601fee-2bf1-4721-ae6f-7636e79a0cba
+            minLength: 36
+            maxLength: 36
+        - name: service_name
+          in: query
+          required: false
+          schema:
+            type: string
+            example: Yandex Plus
+            minLength: 1
+            maxLength: 255
+      responses:
+        '200':
+          description: Успешная операция
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SubscriptionSum'
+        '400':
+          description: Ошибки в запросе
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+
+components:
+  schemas:
+    Subscription:
+      type: object
+      required:
+        - service_name
+        - price
+        - user_id
+        - start_date
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 10
+        service_name:
+          type: string
+          example: Yandex Plus
+          minLength: 1
+          maxLength: 255
+        price:
+          type: integer
+          format: int64
+          example: 500
+          minimum: 0
+        user_id:
+          type: string
+          example: 60601fee-2bf1-4721-ae6f-7636e79a0cba
+          minLength: 36
+          maxLength: 36
+        start_date:
+          type: string
+          format: date
+          example: "01-07-2025"
+        end_date:
+          type: string
+          format: date
+          example: "31-12-2025"
+          nullable: true
+    SubscriptionList:
+      type: array
+      items:
+        $ref: '#/components/schemas/Subscription'
+    Error400:
+      type: object
+      required:
+        - message
+      properties:
+        message:
+          type: string
+        fields:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorField'
+    ErrorField:
+      type: object
+      required:
+        - field_name
+      properties:
+        field_name:
+          type: string
+        errors:
+          type: array
+          items:
+            type: string
+    SubscriptionSum:
+      type: object
+      required:
+        - sum
+      properties:
+        sum:
+          type: integer
+          format: int64
+          example: 500
+          minimum: 0

@@ -1,0 +1,65 @@
+POST http://localhost/v1/subscription
+Content-Type: application/json
+
+{
+    "service_name": "Yandex Plus",
+    "price": 400,
+    "user_id": "60601fee-2bf1-4721-ae6f-7636e79a0cba",
+    "start_date": "2025-07-01T00:00:00+03:00"
+}
+
+###
+POST http://localhost/v1/subscription
+Content-Type: application/json
+
+{
+  "service_name": "Yandex Plus",
+  "price": 400,
+  "user_id": "60601fee-2bf1-4721-ae6f-7636e79a0cba",
+  "end_date": "2125-07-01T00:00:00+03:00",
+  "start_date": "2025-07-01T00:00:00+03:00"
+}
+
+###
+POST http://localhost/v1/subscription
+Content-Type: application/json
+
+{
+  "service_name": "",
+  "price": 400,
+  "user_id": "60601fee-2bf1-4721-ae6f-7636e79a0cba",
+  "start_date": "2025-07-01T00:00:00+03:00"
+}
+
+###
+POST http://localhost/v1/subscription
+Content-Type: application/json
+
+{
+  "service_name": "Yandex Plus",
+  "price": 0,
+  "user_id": "60601fee-2bf1-4721-ae6f-7636e79a0cba",
+  "start_date": "2025-07-01T00:00:00+03:00"
+}
+
+###
+POST http://localhost/v1/subscription
+Content-Type: application/json
+
+{
+  "service_name": "Yandex Plus",
+  "price": 400,
+  "user_id": "2",
+  "start_date": "2025-07-01T00:00:00+03:00"
+}
+
+###
+POST http://localhost/v1/subscription
+Content-Type: application/json
+
+{
+  "service_name": "Yandex Plus",
+  "price": 400,
+  "user_id": "60601fee-2bf1-4721-ae6f-7636e79a0cba",
+  "start_date": ""
+}

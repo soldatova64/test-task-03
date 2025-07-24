@@ -1,0 +1,25 @@
+services:
+  server:
+    image: soldatova64/test-task-03:latest
+    build: .
+    depends_on:
+      - db
+    ports:
+      - "80:80"
+    restart: unless-stopped
+    volumes:
+      - ./:/app
+    command: go run main.go
+  db:
+    image: postgres:17.5-alpine3.22
+    environment:
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=${DB_NAME}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-db:/var/lib/postgresql/data
+
+volumes:
+  postgres-db:

@@ -1,0 +1,3 @@
+GET http://localhost/v1/subscription
+###
+GET http://localhost/v1/subscription/1

@@ -1,0 +1,7 @@
+PUT http://localhost/v1/subscription/1
+Content-Type: application/json
+
+{
+  "service_name": "Yandex Minus"
+}
+
